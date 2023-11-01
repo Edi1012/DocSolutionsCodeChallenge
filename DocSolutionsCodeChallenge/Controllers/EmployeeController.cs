@@ -1,5 +1,7 @@
 ﻿using DocSolutionsCodeChallenge.Models;
 using DocSolutionsCodeChallenge.Repositories;
+using DocSolutionsCodeChallenge.Validators;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocSolutionsCodeChallenge.Controllers
@@ -21,6 +23,18 @@ namespace DocSolutionsCodeChallenge.Controllers
         {
             try
             {
+                // Create an instance of the CreateEmployeeValidator and validate the employee object.
+                var validator = new CreateEmployeeValidator(_employeeRepository);
+                ValidationResult validationResult = validator.Validate(employee);
+
+                if (!validationResult.IsValid)
+                {
+                    // Validation failed, return a BadRequest response with validation errors.
+                    var errorMessages = validationResult.Errors.Select(error => error.ErrorMessage);
+                    return BadRequest($"Validation failed: {string.Join(", ", errorMessages)}");
+                }
+
+
                 _employeeRepository.InsertEmployee(employee.Name, employee.User, employee.Password);
                 return Ok("Employee created successfully");
             }

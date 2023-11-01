@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using DocSolutionsCodeChallenge.Models; // Assuming you have an Employee model class
-using DocSolutionsCodeChallenge.Repositories; // Import the namespace for IEmployeeRepository
+using DocSolutionsCodeChallenge.Models;
+using DocSolutionsCodeChallenge.Repositories;
 
 namespace DocSolutionsCodeChallenge.Validators
 {
@@ -31,7 +31,7 @@ namespace DocSolutionsCodeChallenge.Validators
         private bool UserExists(string user)
         {
             var employee = _employeeRepository.UserEmployeeExist(user);
-            return employee != null;
+            return employee;
         }
     }
 }
