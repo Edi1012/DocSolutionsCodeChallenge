@@ -51,7 +51,7 @@ namespace DocSolutionsCodeChallenge.Controllers
         {
             try
             {
-                bool isValidLogin = _employeeRepository.ValidateEmployeeLogin(request.User, request.Password);
+                bool isValidLogin = _employeeRepository.EmployeeLogin(request.User, request.Password);
                 if (isValidLogin)
                 {
                     return Ok("Login successful");

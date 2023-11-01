@@ -69,7 +69,7 @@ namespace DocSolutionsCodeChallenge.Repositories
             return employees;
         }
 
-        public bool ValidateEmployeeLogin(string user, string password)
+        public bool EmployeeLogin(string user, string password)
         {
             using (var connection = new SqlConnection(connectionString))
             {
