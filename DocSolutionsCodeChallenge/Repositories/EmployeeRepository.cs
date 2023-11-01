@@ -3,11 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace DocSolutionsCodeChallenge.Repositories
-
-
 {
-
-
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly string connectionString;
