@@ -32,7 +32,7 @@ namespace DocSolutionsCodeChallenge.Repositories
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             { }
 
         }
@@ -83,6 +83,23 @@ namespace DocSolutionsCodeChallenge.Repositories
 
                     var result = command.ExecuteScalar();
                     return Convert.ToInt32(result) == 1;
+                }
+            }
+        }
+
+        public bool UserEmployeeExist(string user)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand("UserEmployeeExist", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@user", user);
+
+                    var result = command.ExecuteScalar();
+                    return Convert.ToInt32(result) > 0;
                 }
             }
         }

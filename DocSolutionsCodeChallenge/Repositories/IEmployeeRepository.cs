@@ -7,5 +7,6 @@ namespace DocSolutionsCodeChallenge.Repositories
         void InsertEmployee(string name, string user, string password);
         IEnumerable<Employee> ListEmployees();
         bool EmployeeLogin(string user, string password);
+        bool UserEmployeeExist(string user);
     }
 }
