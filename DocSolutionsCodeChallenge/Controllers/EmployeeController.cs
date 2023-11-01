@@ -3,12 +3,14 @@ using DocSolutionsCodeChallenge.Repositories;
 using DocSolutionsCodeChallenge.Services;
 using DocSolutionsCodeChallenge.Validators;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocSolutionsCodeChallenge.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -64,6 +66,7 @@ namespace DocSolutionsCodeChallenge.Controllers
 
         // POST /employee/Login
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult ValidateEmployeeLogin([FromBody] EmployeeLoginRequestDTO request)
         {
             try
