@@ -1,5 +1,6 @@
 ﻿using DocSolutionsCodeChallenge.Models;
 using DocSolutionsCodeChallenge.Repositories;
+using DocSolutionsCodeChallenge.Services;
 using DocSolutionsCodeChallenge.Validators;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,17 @@ namespace DocSolutionsCodeChallenge.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IJwtService _jwtService;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IJwtService jwtService)
         {
             _employeeRepository = employeeRepository;
+            _jwtService = jwtService;
         }
-
+            
         // POST /employee
         [HttpPost]
-        public IActionResult CreateEmployee([FromBody] Employee employee)
+        public IActionResult CreateEmployee([FromBody] EmployeeDTO employee)
         {
             try
             {
@@ -61,14 +64,18 @@ namespace DocSolutionsCodeChallenge.Controllers
 
         // POST /employee/Login
         [HttpPost("Login")]
-        public IActionResult ValidateEmployeeLogin([FromBody] EmployeeLoginRequest request)
+        public IActionResult ValidateEmployeeLogin([FromBody] EmployeeLoginRequestDTO request)
         {
             try
             {
                 bool isValidLogin = _employeeRepository.EmployeeLogin(request.User, request.Password);
                 if (isValidLogin)
                 {
-                    return Ok("Login successful");
+                    // Generate a JWT token using the injected JWT service
+                    var token = _jwtService.GenerateToken(request.User);
+
+                    // Return the token as part of a response
+                    return Ok(new { Token = token });
                 }
                 else
                 {
@@ -82,14 +89,14 @@ namespace DocSolutionsCodeChallenge.Controllers
         }
     }
 
-    //public class Employee
-    //{
-    //    public string Name { get; set; }
-    //    public string User { get; set; }
-    //    public string Password { get; set; }
-    //}
+    public class EmployeeDTO
+    {
+        public string Name { get; set; }
+        public string User { get; set; }
+        public string Password { get; set; }
+    }
 
-    public class EmployeeLoginRequest
+    public class EmployeeLoginRequestDTO
     {
         public string User { get; set; }
         public string Password { get; set; }

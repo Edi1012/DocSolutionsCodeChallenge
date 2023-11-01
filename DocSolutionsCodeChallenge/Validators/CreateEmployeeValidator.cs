@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using DocSolutionsCodeChallenge.Models;
 using DocSolutionsCodeChallenge.Repositories;
+using DocSolutionsCodeChallenge.Controllers;
 
 namespace DocSolutionsCodeChallenge.Validators
 {
-    public class CreateEmployeeValidator : AbstractValidator<Employee>
+    public class CreateEmployeeValidator : AbstractValidator<EmployeeDTO>
     {
         private readonly IEmployeeRepository _employeeRepository;
 
@@ -21,7 +22,7 @@ namespace DocSolutionsCodeChallenge.Validators
                 .NotNull().WithMessage("User cannot be null.");
 
             RuleFor(employee => employee.Password)
-                .NotEmpty().WithMessage("Password is required.")
+                .NotEmpty().WithMessage("Password is required.") 
                 .NotNull().WithMessage("Password cannot be null.");
 
             RuleFor(employee => employee.User)

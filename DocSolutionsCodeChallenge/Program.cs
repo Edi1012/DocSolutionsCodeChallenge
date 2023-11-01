@@ -1,9 +1,17 @@
+using DocSolutionsCodeChallenge.Models;
 using DocSolutionsCodeChallenge.Repositories;
+using DocSolutionsCodeChallenge.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure the application to read the connection string from appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json");
+
+// Retrieve JWT settings from appsettings.json
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
 // Register your EmployeeRepository as a service using the connection string from appsettings.json
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -17,7 +25,6 @@ builder.Services.AddSingleton<IJwtService>(new JwtService(
 ));
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,7 +58,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
